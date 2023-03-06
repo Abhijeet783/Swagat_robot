@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Swagat Robot</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<style>
+.myDiv {
+  height: 100px;
+  }
+  .holder { 
+
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  padding:10px;
+  font-family:Helvetica;
+}
+.holder .mask {
+  position: relative;
+  left: 0px;
+  top: 10px;
+  width:100%;
+  height:100%;
+  overflow: hidden;
+}
+.holder ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+  position: relative;
+}
+.holder ul li {
+  padding:10px 0px;
+}
+.holder ul li a {
+  color:darkred;
+  text-decoration:none;
+}
+</style>
+</head>
+<body>
+<header>
+<nav class="navbar fixed-top navbar-dark bg-dark">
+  <div class="container-fluid">
+  <!--  <a class="navbar-brand text-white "   href="#">Center for Development of Advanced Computing</a>
+    -->
+      <img src="/static/logo4.png" height = "100%" width = "100%">
+  </div>
+</nav>
+</header>
+
+<div class="container-fluid"> 
+  <div class="myDiv">
+  </div>
+  <div class="row" >
+    <div class="col-6 bg-info" height="100%">
+      <img src="{{ url_for('video_feed') }}" height = "100%" width = "100%"> </div>
+    <div class="col bg-info" height="100%" >
+      <div height="200px"> 
+    
+    
+     <br>
+            <h1> Name :  </h1>
+         
+     <br>
+      <h1> ID : </h1>
+      
+<audio  autoplay=true>
+  <source src= "" type="audio/wav">
+  
+</audio>
+         
+ <br>     </div>
+      <div class="alert alert-primary" role="alert">
+<h2>Kharghar Notice Board  </h2>
+</div>
+      <div class="holder">
+  <ul id="ticker01">						
+    		  
+          {% for row in value %}  
+            <li><h3><a href="#">{{row[0]}}</a></h3></li>
+               
+    
+         {% endfor %} 	
+            </ul>
+</div>
+    <div>
+   
+  </div>
+</div>
+<footer>
+<nav class="navbar fixed-bottom navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"> Notification : <marquee>  Protect yourself and others from COVID-19. Maintain at least a 1-metre distance. </marquee> </a>
+
+
+  </div>
+</nav>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+<script>
+jQuery.fn.liScroll = function(settings) {
+	settings = jQuery.extend({
+		travelocity: 0.03
+		}, settings);		
+		return this.each(function(){
+				var $strip = jQuery(this);
+				$strip.addClass("newsticker")
+				var stripHeight = 1;
+				$strip.find("li").each(function(i){
+					stripHeight += jQuery(this, i).outerHeight(true); // thanks to Michael Haszprunar and Fabien Volpi
+				});
+				var $mask = $strip.wrap("<div class='mask'></div>");
+				var $tickercontainer = $strip.parent().wrap("<div class='tickercontainer'></div>");								
+				var containerHeight = $strip.parent().parent().height();	//a.k.a. 'mask' width 	
+				$strip.height(stripHeight);			
+				var totalTravel = stripHeight;
+				var defTiming = totalTravel/settings.travelocity;	// thanks to Scott Waye		
+				function scrollnews(spazio, tempo){
+				$strip.animate({top: '-='+ spazio}, tempo, "linear", function(){$strip.css("top", containerHeight); scrollnews(totalTravel, defTiming);});
+				}
+				scrollnews(totalTravel, defTiming);				
+				$strip.hover(function(){
+				  jQuery(this).stop();
+				},
+				function(){
+				  var offset = jQuery(this).offset();
+				  var residualSpace = offset.top + stripHeight;
+				  var residualTime = residualSpace/settings.travelocity;
+				  scrollnews(residualSpace, residualTime);
+				});			
+		});	
+};
+
+$(function(){
+    $("ul#ticker01").liScroll();
+});
+</script>
+</body>
+</html>
+
+   
+  
